@@ -14,9 +14,9 @@ const TodoList = () => {
       if (response.ok) {
         setTodos(data);
       } else if (response.status === 404) {
-        // Si la respuesta es 404, crea un nuevo usuario
+      
         await createUser();
-        // Después de crear el usuario, vuelve a intentar obtener las tareas
+        
         await getTask();
       }
     } catch (error) {
@@ -31,7 +31,7 @@ const TodoList = () => {
   const createUser = async () => {
     try {
       let response = await fetch(urlBase, {
-        method: "POST", // Utiliza POST para crear un nuevo usuario
+        method: "POST", 
         headers: {
           "Content-Type": "application/json",
         },
@@ -48,16 +48,16 @@ const TodoList = () => {
   const deleteTask = async (index) => {
     try {
       let updatedTodos = [...todos];
-      updatedTodos.splice(index, 1); // Elimina la tarea del estado local
+      updatedTodos.splice(index, 1); 
 
-      setTodos(updatedTodos); // Actualiza el estado local sin la tarea eliminada
+      setTodos(updatedTodos); 
 
       let response = await fetch(urlBase, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedTodos), // Envía la lista actualizada al servidor
+        body: JSON.stringify(updatedTodos), 
       });
 
       if (response.ok) {
@@ -71,21 +71,21 @@ const TodoList = () => {
   const createTask = async () => {
     try {
       const newTask = { label: inputValue, done: false };
-      const updatedTodos = [...todos, newTask]; // Agrega la nueva tarea al estado local
+      const updatedTodos = [...todos, newTask]; 
 
-      setTodos(updatedTodos); // Actualiza el estado local con la nueva tarea
+      setTodos(updatedTodos); 
 
       let response = await fetch(urlBase, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedTodos), // Envía la lista actualizada al servidor
+        body: JSON.stringify(updatedTodos), 
       });
 
       if (response.ok) {
         console.log("Tarea creada con éxito.");
-        setInputValue(""); // Limpia el campo de entrada después de agregar una tarea
+        setInputValue(""); 
       }
     } catch (error) {
       console.log(error);
@@ -99,7 +99,7 @@ const TodoList = () => {
       });
 
       if (response.ok) {
-        setTodos([]); // Limpia la lista de tareas localmente
+        setTodos([]); 
       }
     } catch (error) {
       console.log(error);
