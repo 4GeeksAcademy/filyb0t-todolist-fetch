@@ -14,10 +14,8 @@ const TodoList = () => {
       if (response.ok) {
         setTodos(data);
       } else if (response.status === 404) {
-      
         await createUser();
-        
-        await getTask();
+        getTask();
       }
     } catch (error) {
       console.log(error);
@@ -31,14 +29,15 @@ const TodoList = () => {
   const createUser = async () => {
     try {
       let response = await fetch(urlBase, {
-        method: "POST", 
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify([]),
       });
       if (response.ok) {
         console.log("Usuario creado con éxito.");
+        getTask();
       }
     } catch (error) {
       console.log(error);
@@ -48,20 +47,19 @@ const TodoList = () => {
   const deleteTask = async (index) => {
     try {
       let updatedTodos = [...todos];
-      updatedTodos.splice(index, 1); 
-
-      setTodos(updatedTodos); 
+      updatedTodos.splice(index, 1);
 
       let response = await fetch(urlBase, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedTodos), 
+        body: JSON.stringify(updatedTodos),
       });
 
       if (response.ok) {
-        console.log("Tarea eliminada con éxito.");
+        console.log("Tarea eliminada con éxito");
+        getTask();
       }
     } catch (error) {
       console.log(error);
@@ -71,21 +69,19 @@ const TodoList = () => {
   const createTask = async () => {
     try {
       const newTask = { label: inputValue, done: false };
-      const updatedTodos = [...todos, newTask]; 
-
-      setTodos(updatedTodos); 
 
       let response = await fetch(urlBase, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedTodos), 
+        body: JSON.stringify([...todos, newTask]),
       });
 
       if (response.ok) {
         console.log("Tarea creada con éxito.");
-        setInputValue(""); 
+        setInputValue("");
+        getTask();
       }
     } catch (error) {
       console.log(error);
@@ -99,7 +95,8 @@ const TodoList = () => {
       });
 
       if (response.ok) {
-        setTodos([]); 
+        console.log("Todas las tareas han sido eliminadas con éxito");
+        getTask();
       }
     } catch (error) {
       console.log(error);
